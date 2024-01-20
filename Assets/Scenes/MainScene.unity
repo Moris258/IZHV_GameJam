@@ -719,7 +719,7 @@ GameObject:
   - component: {fileID: 587522299}
   - component: {fileID: 587522298}
   m_Layer: 5
-  m_Name: GameOverText (1)
+  m_Name: GamePausedText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1051,7 +1051,7 @@ MonoBehaviour:
   spawner: {fileID: 1403640410}
   TutorialText: {fileID: 1762757754}
   GameOverText: {fileID: 1530847677}
-  GamePausedText: {fileID: 0}
+  GamePausedText: {fileID: 587522296}
   AggroedEnemies: 0
 --- !u!4 &757420651
 Transform:
@@ -2250,6 +2250,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7075237779719788308, guid: a964b0edfa41259429b091a94cef83e0, type: 3}
+      propertyPath: HitPoints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7075237779719788308, guid: a964b0edfa41259429b091a94cef83e0, type: 3}
+      propertyPath: MaxHitPoints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7075237779719788308, guid: a964b0edfa41259429b091a94cef83e0, type: 3}
       propertyPath: RegeneratesHP
       value: 1
       objectReference: {fileID: 0}
@@ -2301,6 +2309,10 @@ PrefabInstance:
       propertyPath: UpgradePointsText
       value: 
       objectReference: {fileID: 1200687762}
+    - target: {fileID: 9203626865695247257, guid: a964b0edfa41259429b091a94cef83e0, type: 3}
+      propertyPath: baseRotationSpeed
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 9203626865695247257, guid: a964b0edfa41259429b091a94cef83e0, type: 3}
       propertyPath: AvailableCellTypes.Array.data[0]
       value: 

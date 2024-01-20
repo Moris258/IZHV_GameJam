@@ -113,9 +113,6 @@ public class PlayerController : MonoBehaviour
 
                 newObject.transform.position = new Vector3(blockOffset * (col - playerCellCount / 2), blockOffset * (playerCellCount / 2 - row), 0f);
                 newObject.layer = gameObject.layer;
-
-                if(cell.Type == CellType.cell)
-                    IncreaseMaxHitPoints(CellDefinition.CellHPIncrease);
             }
         }
         transform.position = originalPos;
@@ -125,7 +122,7 @@ public class PlayerController : MonoBehaviour
     public void ResetPlayer(){
         for(int i = 0; i < gameObject.transform.childCount; i++){
             GameObject o = gameObject.transform.GetChild(i).gameObject;
-            o.GetComponent<CellController>().OnCellDestroy(this);
+            IncreaseUpgradePoints(o.GetComponent<CellController>().cost);
             Destroy(o);
         }
     }

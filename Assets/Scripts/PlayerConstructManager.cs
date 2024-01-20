@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +14,10 @@ public class PlayerConstructManager : MonoBehaviour
     public GameObject player;
     private VisualElement root;
     private Label costValue;
+    private Label descrLabel;
+    private Label HPLabel;
+    private Label costLabel;
+
     private int totalCost = 0;
 
     void Awake(){
@@ -28,14 +33,32 @@ public class PlayerConstructManager : MonoBehaviour
     private void Setup(){
         root = GetComponentInChildren<UIDocument>().rootVisualElement;
         root.visible = false;       
+
         costValue = root.Q<Label>("CostValue"); 
+        descrLabel = root.Q<Label>("ItemDescriptionLabel"); 
+        HPLabel = root.Q<Label>("HPLabel"); 
+        costLabel = root.Q<Label>("CellCostLabel"); 
 
         for(int i = 0; i < AvailableCellTypes.Count; i++){
             CellDefinition cell = AvailableCellTypes[i];
-            root.Q<Button>(cell.Name).clicked += () => {selectedItem = cell;};
+            cell.rotation = 0;
+            root.Q<Button>(cell.Name).clicked += () => {
+                selectedItem = cell;
+                if(selectedItem != null){
+                    descrLabel.text = "Descr: " + selectedItem.Description;
+                    HPLabel.text = "HP: " + ((int)selectedItem.Prefab.GetComponent<HitpointManager>().MaxHitPoints).ToString();
+                    costLabel.text = "Cost: " + selectedItem.Prefab.GetComponent<CellController>().cost.ToString();
+                }
+            };
         }
 
-        root.Q<Button>("Remove").clicked += () => {selectedItem = null;};
+        root.Q<Button>("Remove").clicked += () => {
+            selectedItem = null;
+            
+            descrLabel.text = "Descr: No item selected";
+            HPLabel.text = "HP: 0";
+            costLabel.text = "Cost: 0";
+        };
 
         for(int row = 0; row < PlayerController.playerCellCount; row++){
             VisualElement el = root.Q<VisualElement>("Row" + (row + 1));
@@ -47,7 +70,18 @@ public class PlayerConstructManager : MonoBehaviour
                     if(Row == PlayerController.playerCellCount / 2 && Col == PlayerController.playerCellCount / 2) return;
                     PlayerController playerCon = player.GetComponent<PlayerController>();
 
-                    playerCon.PlayerCells[Row, Col] = selectedItem; 
+                    /*
+                    CellDefinition newCell = new CellDefinition
+                    {
+                        sprite = selectedItem.sprite,
+                        name = selectedItem.name,
+                        rotation = selectedItem.rotation,
+                        Prefab = selectedItem.Prefab,
+                        Description = selectedItem.Description,
+                        Type = selectedItem.Type
+                    };*/
+                    
+                    playerCon.PlayerCells[Row, Col] = selectedItem;
                     totalCost = playerCon.GetPlayerCost();
                     UpdateSingleCell(Row, Col, playerCon);
                     UpdateCostDisplay();
@@ -58,13 +92,6 @@ public class PlayerConstructManager : MonoBehaviour
     }
 
     public void ToggleInventory(){
-        //if(!inventoryReady) return false;
-
-        /*
-        if(root.style.visibility == Visibility.Visible)
-            root.style.visibility = Visibility.Hidden;
-        else
-            root.style.visibility = Visibility.Visible;*/
         root.visible = !root.visible;
         if(root.visible){
             UpdatePlayerCells();
@@ -107,17 +134,5 @@ public class PlayerConstructManager : MonoBehaviour
                     button.style.backgroundImage = null;
             }
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

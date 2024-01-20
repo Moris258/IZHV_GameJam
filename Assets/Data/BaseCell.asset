@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BaseCell
   m_EditorClassIdentifier: 
   Name: Cell
-  Cost: 5
   Prefab: {fileID: 6606222553594062829, guid: c086981d1fe3eca4fa7aac2edf177149, type: 3}
   Type: 1
   rotation: 0
   sprite: {fileID: 21300000, guid: 1c0c469643690a447ba205eaadc9752e, type: 3}
+  Description: Basic building block of the organism. Increases total HP of organism.

@@ -7,6 +7,21 @@ public class CellController : MonoBehaviour
     public CellType type;
     public int cost;
 
+    void Awake(){
+        if(transform.parent.tag == "Player"){
+            PlayerController playerController = transform.parent.GetComponent<PlayerController>();
+            switch(type){
+                case CellType.cell:
+                    playerController.IncreaseMaxHitPoints(CellDefinition.CellHPIncrease);
+                break;
+
+                case CellType.booster:
+                    playerController.baseRotationSpeed += CellDefinition.CellRotationIncrease;
+                break;
+            }
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,12 +34,18 @@ public class CellController : MonoBehaviour
         
     }
 
-    public void OnCellDestroy(PlayerController playerController){
-        playerController.IncreaseUpgradePoints(cost);
-        switch(type){
-            case CellType.cell:
-                playerController.IncreaseMaxHitPoints(-CellDefinition.CellHPIncrease);
-            break;
+    void OnDestroy(){
+        if(transform.parent.tag == "Player"){
+            PlayerController playerController = transform.parent.GetComponent<PlayerController>();
+            switch(type){
+                case CellType.cell:
+                    playerController.IncreaseMaxHitPoints(-CellDefinition.CellHPIncrease);
+                break;
+
+                case CellType.booster:
+                    playerController.baseRotationSpeed -= CellDefinition.CellRotationIncrease;
+                break;
+            }
         }
     }
 }

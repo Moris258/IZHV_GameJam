@@ -17,5 +17,7 @@ public class CellDefinition : ScriptableObject
     public float rotation;
     public Sprite sprite;
     public const int CellHPIncrease = 20;
+    public const float CellRotationIncrease = 50;
+    public string Description;
 
 }

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SpikeCell
   m_EditorClassIdentifier: 
   Name: Spike
-  Cost: 15
   Prefab: {fileID: 6706446296258070442, guid: f4d5d17542fef61489436d8823f261f9, type: 3}
   Type: 0
   rotation: 0
   sprite: {fileID: 21300000, guid: 86cd80eb5fe9e5c4dafaf578f5e22d92, type: 3}
+  Description: Stabs other organisms to death.
