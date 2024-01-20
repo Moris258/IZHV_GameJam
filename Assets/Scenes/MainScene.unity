@@ -1720,8 +1720,12 @@ MonoBehaviour:
   MaxEnemies: 20
   player: {fileID: 1062436053}
   EnemyPrefabs:
-  - {fileID: 3996485065052093225, guid: 769c9c3715b13a04f83bf4210dc503b2, type: 3}
+  - {fileID: 3996485065052093225, guid: 6ee818c931d0ac14294b9e6ead4b3c3f, type: 3}
   - {fileID: 7180933930581157543, guid: c7fd0590e59974d49b0b46884a0b45e1, type: 3}
+  - {fileID: 3996485065052093225, guid: 769c9c3715b13a04f83bf4210dc503b2, type: 3}
+  - {fileID: 7180933930581157543, guid: 21107642a4f55ab4d9302ec256174b29, type: 3}
+  - {fileID: 3996485065052093225, guid: 435d16d3f58b1704688172e98b30dd93, type: 3}
+  - {fileID: 3996485065052093225, guid: 4c52ed31fab04714fa52bbd6f091b505, type: 3}
 --- !u!4 &1403640412
 Transform:
   m_ObjectHideFlags: 0

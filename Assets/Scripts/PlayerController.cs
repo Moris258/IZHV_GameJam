@@ -150,6 +150,7 @@ public class PlayerController : MonoBehaviour
         Quaternion originalRot = transform.rotation;
         transform.position = new Vector2(0f, 0f);
         transform.rotation = new Quaternion();
+        RB.mass = 0;
         
         for(int row = 0; row < playerCellCount; row++){
             for(int col = 0; col < playerCellCount; col++){
@@ -167,6 +168,7 @@ public class PlayerController : MonoBehaviour
                 newObject.transform.position = new Vector3(blockOffset * (col - playerCellCount / 2), blockOffset * (playerCellCount / 2 - row), 0f);
                 
                 newObject.layer = gameObject.layer;
+                RB.mass += cell.Weight;
                 if(cell.Type == CellType.cell) cells++;
             }
         }

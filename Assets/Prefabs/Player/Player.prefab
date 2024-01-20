@@ -52,7 +52,9 @@ MonoBehaviour:
   baseRotationSpeed: 50
   rotationThreshold: 0.6
   UpgradePointsText: {fileID: 0}
-  StartingPoints: 100
+  StartingPoints: 50
+  PassiveUpgradePointGain: 1
+  PassiveUpgradePointGainInterval: 5
   AvailableCellTypes:
   - {fileID: 11400000, guid: 89c3597272a64fb4899827bc8148bc3e, type: 2}
   - {fileID: 11400000, guid: 60f91c45f07d51d4e95f928654e45f5c, type: 2}
@@ -68,8 +70,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
-  m_Mass: 4.1820645
+  m_UseAutoMass: 0
+  m_Mass: 4.182065
   m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 0

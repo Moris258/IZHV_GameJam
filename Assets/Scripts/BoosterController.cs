@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,8 +44,12 @@ public class BoosterController : MonoBehaviour
 
     void MoveObject(Rigidbody2D target, Vector3 direction){
         if(target == null || direction == null) return;
+
+        float massFactor = MassScaling / target.mass;
+        if(massFactor > 1)
+            massFactor = 1;
         
-        target.AddForce(new Vector2(direction.x, direction.y) * speed * (MassScaling / target.mass));
+        target.AddForce(new Vector2(direction.x, direction.y) * speed * (float)Math.Pow(massFactor, 1/3));
 
         cooldown = cooldownLength;
     }

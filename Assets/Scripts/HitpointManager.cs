@@ -64,6 +64,8 @@ public class HitpointManager : MonoBehaviour
         HitPoints += amount;
         if(HitPoints > MaxHitPoints)
             HitPoints = MaxHitPoints;
+        if(HitPoints < 0)
+            HitPoints = 0;
         HitPointsChanged();
     }
 

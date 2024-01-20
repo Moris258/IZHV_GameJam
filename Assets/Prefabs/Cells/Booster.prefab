@@ -94,9 +94,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownLength: 1
-  speed: 3000
-  MassScaling: 8
-  massDivisor: 1
+  speed: 2000
+  MassScaling: 10
 --- !u!114 &-8506139450930817029
 MonoBehaviour:
   m_ObjectHideFlags: 0

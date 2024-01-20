@@ -29,6 +29,7 @@ public class CellDefinition : ScriptableObject
     public const float CellRotationIncrease = 50;
     public string Description;
     public bool Rotatable;
+    public float Weight;
 
     public CellDefinition CloneCellDefinition(){
         CellDefinition newCell = CreateInstance<CellDefinition>();
@@ -40,6 +41,7 @@ public class CellDefinition : ScriptableObject
         newCell.Type = Type;
         newCell.AttachmentPoint = AttachmentPoint;
         newCell.Rotatable = Rotatable;
+        newCell.Weight = Weight;
 
         return newCell;
     }

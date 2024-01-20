@@ -20,3 +20,4 @@ MonoBehaviour:
   AttachmentPoint: 180
   Description: Stabs other organisms to death.
   Rotatable: 1
+  Weight: 1
