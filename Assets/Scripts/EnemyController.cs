@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
     public float rotationMoveThreshold = 10.0f;
 
     private bool shouldMove = false;
+    private bool aggroed = false;
 
     public bool ShouldMove {get {return shouldMove;}}
 
@@ -45,6 +46,10 @@ public class EnemyController : MonoBehaviour
         GameObject player = GameManager.Instance.player;
 
         if(player != null && Vector2.Distance(transform.position, player.transform.position) < aggroRange){
+            if(!aggroed){
+                GameManager.Instance.AggroedEnemies++;
+                aggroed = true;
+            }
             //Rotate towards player
             Vector2 localTarget = transform.InverseTransformPoint(player.transform.position);
             if (localTarget.x < -rotationThreshold) {
@@ -62,7 +67,16 @@ public class EnemyController : MonoBehaviour
             }
         }
         else{
+            if(aggroed){
+                GameManager.Instance.AggroedEnemies--;
+                aggroed = false;
+            }
             shouldMove = false;
         }
+    }
+
+    void OnDestroy(){
+        if(aggroed)
+                GameManager.Instance.AggroedEnemies--;
     }
 }

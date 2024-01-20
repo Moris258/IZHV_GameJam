@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class GameManager : MonoBehaviour
@@ -17,7 +18,13 @@ public class GameManager : MonoBehaviour
     public GameObject player;
 
     public GameObject spawner;
-    
+
+    public GameObject TutorialText;
+    public GameObject GameOverText;
+    public GameObject GamePausedText;
+
+    public int AggroedEnemies;
+
     private static GameManager instance;
 
     public static GameManager Instance {get {return instance;}}
@@ -41,6 +48,10 @@ public class GameManager : MonoBehaviour
         gameLost = false;
         gamePaused = true;
         gameStarted = false;
+        AggroedEnemies = 0;
+        TutorialText.GetComponent<Text>().enabled = true;
+        GameOverText.GetComponent<Text>().enabled = false;
+        GamePausedText.GetComponent<Text>().enabled = false;
     }
 
     public void EndGame(){
@@ -49,7 +60,8 @@ public class GameManager : MonoBehaviour
         player = null;
 
         spawner.GetComponent<SpawnerScript>().SpawnEnemies = false;
-        //TODO: display basic controls
+        
+        GameOverText.GetComponent<Text>().enabled = true;
     }
 
     public void ResetGame(){
@@ -64,11 +76,14 @@ public class GameManager : MonoBehaviour
         gameStarted = true;
         gamePaused = false;
         gameLost = false;
+        TutorialText.GetComponent<Text>().enabled = false;
         spawner.GetComponent<SpawnerScript>().SpawnEnemies = true;
     }
 
     void ToggleUpgradeMenu(){
         if(gameLost) return;
+        if(AggroedEnemies > 0) return;
+
         PlayerController playerController = player.GetComponent<PlayerController>();
 
         if(gamePaused && !playerController.CanBuildPlayer()) return;
@@ -92,18 +107,24 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!gameStarted && Input.GetButtonDown("Jump")){
+        
+        if(!gameStarted && Input.GetButtonDown("Vertical")){
             StartGame();
         }
         if(!gameStarted) return;
-
+        
         if(Input.GetButtonDown("Jump")){
             ToggleUpgradeMenu();
         }
 
-        if (Input.GetButtonDown("Cancel")){ 
+        if(Input.GetButtonDown("Cancel") && gameLost){
+            ResetGame();
+        }
+
+        if (Input.GetButtonDown("Cancel") && !gameLost){ 
             gamePaused = !gamePaused;
-            //Show pause text
+            GamePausedText.GetComponent<Text>().enabled = gamePaused;
+
         }
     }
 }

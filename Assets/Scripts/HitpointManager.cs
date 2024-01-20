@@ -94,9 +94,6 @@ public class HitpointManager : MonoBehaviour
 
                 Destroy(gameObject);
             }
-
-
-            Debug.Log("Cell took damage. " + amount + tag);
         }
         else{
             transform.parent.GetComponent<HitpointManager>().TakeDamage(amount, type);

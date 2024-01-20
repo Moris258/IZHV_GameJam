@@ -14,6 +14,8 @@ public class SpawnerScript : MonoBehaviour
     public int MaxEnemies = 20;
     private string spawnLayer = "Enemy";
 
+    public GameObject player;
+
     public List<GameObject> EnemyPrefabs = new List<GameObject>();
 
 
@@ -45,7 +47,12 @@ public class SpawnerScript : MonoBehaviour
         if(enemy >= EnemyPrefabs.Count) enemy = EnemyPrefabs.Count - 1;
 
         GameObject spawnedEnemy = Instantiate(EnemyPrefabs[enemy], transform);
-        spawnedEnemy.transform.position = new Vector3(RandomInterval(-SpawnArea.x, SpawnArea.x), RandomInterval(-SpawnArea.y, SpawnArea.y), 0.0f);
+        Vector3 newPos = new Vector3();
+        do{
+            newPos = new Vector3(RandomInterval(-SpawnArea.x, SpawnArea.x), RandomInterval(-SpawnArea.y, SpawnArea.y), 0.0f);
+        }while(Vector3.Distance(newPos, player.transform.position) < 10);
+
+        spawnedEnemy.transform.position = newPos;
 
         spawnedEnemy.layer = LayerMask.NameToLayer(spawnLayer);
     }
