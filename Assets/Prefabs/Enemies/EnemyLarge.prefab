@@ -102,7 +102,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitPoints: 120
-  MaxHitPoints: 20
+  MaxHitPoints: 120
+  HPRegen: 0
+  HPRegenFrequency: 5
+  RegeneratesHP: 0
+  InvincibilityPeriod: 1
   HPText: {fileID: 0}
 --- !u!1001 &510898695737557418
 PrefabInstance:

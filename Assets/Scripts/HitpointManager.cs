@@ -16,7 +16,7 @@ public class HitpointManager : MonoBehaviour
     public bool RegeneratesHP = false;
     public float InvincibilityPeriod = 1.0f;
     private float invincibilityTimer = 0.0f;
-    private bool isInvicible = false;
+    private bool isInvincible = false;
     public GameObject HPText;
 
     // Start is called before the first frame update
@@ -29,11 +29,11 @@ public class HitpointManager : MonoBehaviour
     void Update()
     {
         if(GameManager.Instance.GamePaused) return;
-        if(isInvicible){
+        if(isInvincible){
             invincibilityTimer += Time.deltaTime;
             if(invincibilityTimer > InvincibilityPeriod){
-                isInvicible = false;
-                invincibilityTimer = 0f;
+                isInvincible = false;
+                invincibilityTimer -= InvincibilityPeriod;
             }
         }
 
@@ -45,18 +45,36 @@ public class HitpointManager : MonoBehaviour
 
             HPRegenTimer += Time.deltaTime;
         }
+        if(tag == "Player" && Input.GetKeyDown("h") && HitPoints != MaxHitPoints){
+            float amountHealed = MaxHitPoints - HitPoints;
+            PlayerController playerController = transform.GetComponent<PlayerController>();
+            if(amountHealed < playerController.UpgradePoints)
+            {
+                IncreaseHP(amountHealed);
+                playerController.IncreaseUpgradePoints((int)-amountHealed);
+            }
+            else{
+                IncreaseHP(playerController.UpgradePoints);
+                playerController.IncreaseUpgradePoints(-playerController.UpgradePoints);
+            }
+        }
     }
 
     public void IncreaseHP(float amount){
-        HitPoints += HPRegen;
+        HitPoints += amount;
         if(HitPoints > MaxHitPoints)
             HitPoints = MaxHitPoints;
         HitPointsChanged();
     }
 
     public void IncreaseMaxHitpoints(int amount){
-        this.MaxHitPoints += amount;
-        this.HitPoints += amount;
+        MaxHitPoints += amount;
+
+        if(HitPoints > MaxHitPoints)
+            HitPoints = MaxHitPoints;
+        if(HitPoints < 0)
+            HitPoints = 0;
+
         HitPointsChanged();
     }
 
@@ -64,20 +82,38 @@ public class HitpointManager : MonoBehaviour
         text.text = $"{(int)HitPoints}/{(int)MaxHitPoints}";
     }
 
-    private void HitPointsChanged(){
-        if(HPText == null) return;
+    private Color GetCellColor(){
+        return new Color(1 - HitPoints / MaxHitPoints, HitPoints / MaxHitPoints, 0f);
+    }
 
-        DisplayHP(HPText.transform.Find("Value").GetComponent<Text>());
+    private void HitPointsChanged(){
+        if(HPText != null) DisplayHP(HPText.transform.Find("Value").GetComponent<Text>());
+
+        switch(tag){
+            case "Player":
+            case "Enemy":
+            for(int i = 0; i < transform.childCount; i++){
+                GameObject o = transform.GetChild(i).gameObject;
+                if(o.tag == "Cell"){
+                    o.transform.GetChild(0).GetComponent<SpriteRenderer>().color = GetCellColor();
+                }
+            }
+            break;
+            default:
+            transform.GetChild(0).GetComponent<SpriteRenderer>().color = GetCellColor();
+            break;
+        }
     }
 
     public void TakeDamage(float amount, DamageType type){
         //TODO: use damage type for something
-        if(isInvicible) return;
+        if(isInvincible) return;
         
         if(tag != "Cell"){
             HitPoints -= amount;
+            isInvincible = true;
     
-            if(tag == "Player") HitPointsChanged();
+            HitPointsChanged();
 
             if(HitPoints <= 0f){
                 switch (tag)

@@ -49,13 +49,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6e1c2fcbec373649902592a8a4a2138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseRotationSpeed: 100
+  baseRotationSpeed: 50
   rotationThreshold: 0.6
-  HPPerCell: 20
+  UpgradePointsText: {fileID: 0}
+  StartingPoints: 100
   AvailableCellTypes:
+  - {fileID: 11400000, guid: 89c3597272a64fb4899827bc8148bc3e, type: 2}
   - {fileID: 11400000, guid: 60f91c45f07d51d4e95f928654e45f5c, type: 2}
   - {fileID: 11400000, guid: e43dbfae696e48f4ebb16cfb89691b0a, type: 2}
-  - {fileID: 11400000, guid: 89c3597272a64fb4899827bc8148bc3e, type: 2}
 --- !u!50 &7649991816954639719
 Rigidbody2D:
   serializedVersion: 4
@@ -95,8 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d2ddecec497ce84f80a1081d74db7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HitPoints: 20
-  MaxHitPoints: 20
+  HitPoints: 0
+  MaxHitPoints: 0
+  HPRegen: 1
+  HPRegenFrequency: 5
+  RegeneratesHP: 1
+  InvincibilityPeriod: 1
   HPText: {fileID: 0}
 --- !u!1001 &1699396359234027673
 PrefabInstance:

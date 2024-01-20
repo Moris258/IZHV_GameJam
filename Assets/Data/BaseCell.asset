@@ -17,4 +17,5 @@ MonoBehaviour:
   Type: 1
   rotation: 0
   sprite: {fileID: 21300000, guid: 1c0c469643690a447ba205eaadc9752e, type: 3}
+  AttachmentPoint: -1
   Description: Basic building block of the organism. Increases total HP of organism.

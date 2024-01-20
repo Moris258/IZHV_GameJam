@@ -73,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 86cd80eb5fe9e5c4dafaf578f5e22d92, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d34e58ab0fa9ef9499c553aed72e66ad, type: 3}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -203,6 +203,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitPoints: 30
   MaxHitPoints: 30
+  HPRegen: 0
+  HPRegenFrequency: 5
+  RegeneratesHP: 0
   InvincibilityPeriod: 1
   HPText: {fileID: 0}
 --- !u!114 &-1711164989089760656

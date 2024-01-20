@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
@@ -13,11 +14,16 @@ public class PlayerController : MonoBehaviour
     public int StartingPoints = 100;
     private int upgradePoints = 10;
     public int UpgradePoints{get {return upgradePoints;}}
+    public int PassiveUpgradePointGain = 1;
+    public float PassiveUpgradePointGainInterval = 5.0f;
+    private float upgradePointGainTimer = 0.0f;
     private Rigidbody2D RB;
     public Rigidbody2D RigidBody{get {return RB;}}
     public const int playerCellCount = 5;
     public CellDefinition[,] PlayerCells;
     public List<CellDefinition> AvailableCellTypes = new List<CellDefinition>();
+    private int CellsBeforeRebuild = 0;
+    private float HPBeforeRebuild = 0f;
 
     void Awake(){
         PlayerCells = new CellDefinition[playerCellCount, playerCellCount];
@@ -27,14 +33,15 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         RB = GetComponent<Rigidbody2D>();
-        PlayerCells[2,2] = AvailableCellTypes[(int)CellType.cell];
-        PlayerCells[1,2] = AvailableCellTypes[(int)CellType.spike];
-        PlayerCells[3,2] = AvailableCellTypes[(int)CellType.booster];
+        PlayerCells[2,2] = AvailableCellTypes[(int)CellType.cell].CloneCellDefinition();
+        PlayerCells[1,2] = AvailableCellTypes[(int)CellType.spike].CloneCellDefinition();
+        PlayerCells[3,2] = AvailableCellTypes[(int)CellType.booster].CloneCellDefinition();
 
         upgradePoints = StartingPoints;
         ResetPlayer();
         BuildPlayer(false);
         UpgradePointsChanged();
+        GetComponent<HitpointManager>().IncreaseHP(20);
     }
 
     // Update is called once per frame
@@ -48,6 +55,12 @@ public class PlayerController : MonoBehaviour
         
         if(!RB.simulated)
             RB.simulated = true;
+
+        if(upgradePointGainTimer >= PassiveUpgradePointGainInterval){
+            IncreaseUpgradePoints(PassiveUpgradePointGain);
+            upgradePointGainTimer -= PassiveUpgradePointGainInterval;
+        }
+        upgradePointGainTimer += Time.deltaTime;
         
         float rotationSpeed = baseRotationSpeed * (5 / RB.mass);
 
@@ -65,23 +78,56 @@ public class PlayerController : MonoBehaviour
         for(int row = 0; row < playerCellCount; row++){
             for(int col = 0; col < playerCellCount; col++){
                 if(PlayerCells[row, col] == null) continue;
+                CellDefinition cell = PlayerCells[row, col];
+
                 bool valid = false;
+                if(cell.AttachmentPoint == CellOrientation.all){
+                    if(row != 0)
+                        if(PlayerCells[row - 1, col] != null && PlayerCells[row - 1, col].Type == CellType.cell)
+                            valid = true;
+                    if(row != playerCellCount - 1)
+                        if(PlayerCells[row + 1, col] != null && PlayerCells[row + 1, col].Type == CellType.cell)
+                            valid = true;
 
-                if(row != 0)
-                    if(PlayerCells[row - 1, col] != null)
-                        valid = true;
+                    if(col != 0)
+                        if(PlayerCells[row, col - 1] != null && PlayerCells[row, col - 1].Type == CellType.cell)
+                            valid = true;
 
-                if(row != 4)
-                    if(PlayerCells[row + 1, col] != null)
-                        valid = true;
+                    if(col != playerCellCount - 1)
+                        if(PlayerCells[row, col + 1] != null && PlayerCells[row, col + 1].Type == CellType.cell)
+                            valid = true;
+                }
+                else{
+                    int checkDir = cell.rotation + (int)cell.AttachmentPoint;
+                    if(checkDir >= 360)
+                        checkDir -= 360;
+                
+                    switch(checkDir){
+                        case 0:
+                        if(row != 0)
+                            if(PlayerCells[row - 1, col] != null && PlayerCells[row - 1, col].Type == CellType.cell)
+                                valid = true;
+                        break;
+                        case 90:
+                        if(col != playerCellCount - 1)
+                            if(PlayerCells[row, col + 1] != null && PlayerCells[row, col + 1].Type == CellType.cell)
+                                valid = true;
+                        break;
+                        case 180:
+                        if(row != playerCellCount - 1)
+                            if(PlayerCells[row + 1, col] != null && PlayerCells[row + 1, col].Type == CellType.cell)
+                                valid = true;
+                        break;
+                        case 270:
+                        if(col != 0)
+                            if(PlayerCells[row, col - 1] != null && PlayerCells[row, col - 1].Type == CellType.cell)
+                                valid = true;
+                        break;
+                    }
+                }
 
-                if(col != 0)
-                    if(PlayerCells[row, col - 1] != null)
-                        valid = true;
-
-                if(col != 4)
-                    if(PlayerCells[row, col + 1] != null)
-                        valid = true;
+                if(row == playerCellCount / 2 && col == playerCellCount / 2)
+                    valid = true;
 
                 if(!valid)
                     return false;
@@ -99,6 +145,7 @@ public class PlayerController : MonoBehaviour
         }
         IncreaseUpgradePoints(-GetPlayerCost());
 
+        int cells = 0;
         Vector3 originalPos = transform.position;
         Quaternion originalRot = transform.rotation;
         transform.position = new Vector2(0f, 0f);
@@ -111,18 +158,30 @@ public class PlayerController : MonoBehaviour
 
                 GameObject newObject = Instantiate(cell.Prefab, transform);
 
+                int targetRotation = cell.rotation;
+                
+                if(targetRotation != 0 && targetRotation != 180)
+                    targetRotation -= 180;
+
+                newObject.transform.rotation = Quaternion.Euler(0f, 0f, targetRotation);
                 newObject.transform.position = new Vector3(blockOffset * (col - playerCellCount / 2), blockOffset * (playerCellCount / 2 - row), 0f);
+                
                 newObject.layer = gameObject.layer;
+                if(cell.Type == CellType.cell) cells++;
             }
         }
         transform.position = originalPos;
         transform.rotation = originalRot;
+        GetComponent<HitpointManager>().IncreaseHP(CellDefinition.CellHPIncrease * (cells - CellsBeforeRebuild) + HPBeforeRebuild);
     }
 
     public void ResetPlayer(){
+        CellsBeforeRebuild = 0;
+        HPBeforeRebuild = GetComponent<HitpointManager>().HitPoints;
         for(int i = 0; i < gameObject.transform.childCount; i++){
             GameObject o = gameObject.transform.GetChild(i).gameObject;
             IncreaseUpgradePoints(o.GetComponent<CellController>().cost);
+            if(o.tag == "Cell") CellsBeforeRebuild++;
             Destroy(o);
         }
     }

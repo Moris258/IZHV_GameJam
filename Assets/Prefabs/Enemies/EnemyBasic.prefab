@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aggroRange: 20
+  PointsReward: 10
   rotationThreshold: 0.4
   baseRotationSpeed: 60
   rotationMoveThreshold: 2
@@ -94,7 +95,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitPoints: 60
-  MaxHitPoints: 20
+  MaxHitPoints: 60
+  HPRegen: 0
+  HPRegenFrequency: 5
+  RegeneratesHP: 0
+  InvincibilityPeriod: 1
   HPText: {fileID: 0}
 --- !u!1001 &1061948748606315033
 PrefabInstance:

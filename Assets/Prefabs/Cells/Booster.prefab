@@ -94,8 +94,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownLength: 1
-  speed: 2000
-  MassScaling: 15
+  speed: 3000
+  MassScaling: 8
+  massDivisor: 1
 --- !u!114 &-8506139450930817029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,6 +111,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitPoints: 30
   MaxHitPoints: 30
+  HPRegen: 0
+  HPRegenFrequency: 5
+  RegeneratesHP: 0
   InvincibilityPeriod: 1
   HPText: {fileID: 0}
 --- !u!114 &-1004312097709576015
@@ -199,8 +203,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c0cc122661338e248af92574a05c1d19, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 476ed7776b0df4343adb528b3c5bb112, type: 3}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
