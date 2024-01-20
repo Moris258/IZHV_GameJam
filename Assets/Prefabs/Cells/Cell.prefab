@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 3119302523192471098}
   - component: {fileID: 1331702251966217993}
   - component: {fileID: -648026113028226139}
+  - component: {fileID: -2372054593197798828}
   m_Layer: 0
   m_Name: Cell
   m_TagString: Cell
@@ -176,3 +177,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitPoints: 0
+  MaxHitPoints: 0
+  InvincibilityPeriod: 1
+  HPText: {fileID: 0}
+--- !u!114 &-2372054593197798828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6606222553594062829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f5ce256e798b45419941248f5cf37c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  cost: 5

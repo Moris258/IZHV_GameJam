@@ -12,9 +12,10 @@ public enum CellType{
 public class CellDefinition : ScriptableObject
 {
     public string Name;
-    public int Cost;
     public GameObject Prefab;
     public CellType Type;
     public float rotation;
+    public Sprite sprite;
+    public const int CellHPIncrease = 20;
 
 }

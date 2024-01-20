@@ -9,6 +9,8 @@ public class EnemyController : MonoBehaviour
 
     public float aggroRange = 20.0f;
 
+    public int PointsReward = 10;
+
     public float rotationThreshold = 0.4f;
 
     public float baseRotationSpeed = 100f;
@@ -29,7 +31,14 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance.GamePaused) return;
+        if(GameManager.Instance.GamePaused) {
+            if(RB.simulated)
+                RB.simulated = false;
+            return;
+        }
+        
+        if(!RB.simulated)
+            RB.simulated = true;
         
         float rotationSpeed = baseRotationSpeed * (5 / RB.mass);
 

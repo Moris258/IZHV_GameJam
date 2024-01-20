@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1755284288663416755}
   - component: {fileID: -8118121922673622475}
   - component: {fileID: -8506139450930817029}
+  - component: {fileID: -1004312097709576015}
   m_Layer: 0
   m_Name: Booster
   m_TagString: Untagged
@@ -94,6 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldownLength: 1
   speed: 2000
+  MassScaling: 15
 --- !u!114 &-8506139450930817029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,6 +109,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitPoints: 30
+  MaxHitPoints: 30
+  InvincibilityPeriod: 1
+  HPText: {fileID: 0}
+--- !u!114 &-1004312097709576015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3418773859860326261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f5ce256e798b45419941248f5cf37c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  cost: 25
 --- !u!1 &4138295617957542809
 GameObject:
   m_ObjectHideFlags: 0

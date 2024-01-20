@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 4245623995784856229}
   - component: {fileID: 8964908347360966728}
   - component: {fileID: 4702187879509604899}
+  - component: {fileID: -1711164989089760656}
   m_Layer: 0
   m_Name: Spike
   m_TagString: Untagged
@@ -201,5 +202,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HitPoints: 30
-  MaxHitPoints: 20
+  MaxHitPoints: 30
+  InvincibilityPeriod: 1
   HPText: {fileID: 0}
+--- !u!114 &-1711164989089760656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6706446296258070442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f5ce256e798b45419941248f5cf37c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  cost: 15

@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aggroRange: 20
+  PointsReward: 25
   rotationThreshold: 0.4
   baseRotationSpeed: 100
   rotationMoveThreshold: 2

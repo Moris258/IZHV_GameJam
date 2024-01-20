@@ -16,8 +16,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 
-    public List<GameObject> enemies;
-
+    public GameObject spawner;
+    
     private static GameManager instance;
 
     public static GameManager Instance {get {return instance;}}
@@ -39,23 +39,48 @@ public class GameManager : MonoBehaviour
 
     public void GameSetup(){
         gameLost = false;
-        gamePaused = false;
-        gameStarted = true;
+        gamePaused = true;
+        gameStarted = false;
     }
 
     public void EndGame(){
         gameLost = true;
         gamePaused = false;
         player = null;
-        //Do other stuff
+
+        spawner.GetComponent<SpawnerScript>().SpawnEnemies = false;
+        //TODO: display basic controls
     }
 
     public void ResetGame(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void EnemyDied(){
-        player.GetComponent<PlayerController>().IncreaseUpgradePoints(10);
+    public void EnemyDied(EnemyController enemyController){
+        player.GetComponent<PlayerController>().IncreaseUpgradePoints(enemyController.PointsReward);
+    }
+
+    void StartGame(){
+        gameStarted = true;
+        gamePaused = false;
+        gameLost = false;
+        spawner.GetComponent<SpawnerScript>().SpawnEnemies = true;
+    }
+
+    void ToggleUpgradeMenu(){
+        if(gameLost) return;
+        PlayerController playerController = player.GetComponent<PlayerController>();
+
+        if(gamePaused && !playerController.CanBuildPlayer()) return;
+        gamePaused = !gamePaused;
+
+        if(gamePaused)
+            playerController.ResetPlayer();
+
+        PlayerConstructManager.Instance.ToggleInventory();
+
+        if(!gamePaused)
+            playerController.BuildPlayer(true);
     }
 
     // Start is called before the first frame update
@@ -67,6 +92,18 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(!gameStarted && Input.GetButtonDown("Jump")){
+            StartGame();
+        }
+        if(!gameStarted) return;
+
+        if(Input.GetButtonDown("Jump")){
+            ToggleUpgradeMenu();
+        }
+
+        if (Input.GetButtonDown("Cancel")){ 
+            gamePaused = !gamePaused;
+            //Show pause text
+        }
     }
 }

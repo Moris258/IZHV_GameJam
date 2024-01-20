@@ -7,6 +7,7 @@ public class BoosterController : MonoBehaviour
     private float cooldown;
     public float cooldownLength = 1.0f;
     public float speed = 1000.0f;
+    public float MassScaling = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +44,7 @@ public class BoosterController : MonoBehaviour
     void MoveObject(Rigidbody2D target, Vector3 direction){
         if(target == null || direction == null) return;
         
-        target.AddForce(new Vector2(direction.x, direction.y) * speed * (5 / target.mass));
+        target.AddForce(new Vector2(direction.x, direction.y) * speed * (MassScaling / target.mass));
 
         cooldown = cooldownLength;
     }
