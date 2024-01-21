@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private bool gameLost;
 
     private bool gamePaused;
+    private bool inventoryOpen;
 
     private bool gameStarted;
 
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     public GameObject TutorialText;
     public GameObject GameOverText;
     public GameObject GamePausedText;
+    public GameObject QuitGameButton;
 
     public int AggroedEnemies;
 
@@ -48,10 +50,14 @@ public class GameManager : MonoBehaviour
         gameLost = false;
         gamePaused = true;
         gameStarted = false;
+        inventoryOpen = false;
         AggroedEnemies = 0;
         TutorialText.GetComponent<Text>().enabled = true;
         GameOverText.GetComponent<Text>().enabled = false;
         GamePausedText.GetComponent<Text>().enabled = false;
+        QuitGameButton.GetComponent<Button>().enabled = false;
+        QuitGameButton.GetComponent<Image>().enabled = false;
+        QuitGameButton.transform.GetChild(0).GetComponent<Text>().enabled = false;
     }
 
     public void EndGame(){
@@ -62,6 +68,9 @@ public class GameManager : MonoBehaviour
         spawner.GetComponent<SpawnerScript>().SpawnEnemies = false;
         
         GameOverText.GetComponent<Text>().enabled = true;
+        QuitGameButton.GetComponent<Button>().enabled = true;
+        QuitGameButton.GetComponent<Image>().enabled = true;
+        QuitGameButton.transform.GetChild(0).GetComponent<Text>().enabled = true;
     }
 
     public void ResetGame(){
@@ -88,6 +97,7 @@ public class GameManager : MonoBehaviour
 
         if(gamePaused && !playerController.CanBuildPlayer()) return;
         gamePaused = !gamePaused;
+        inventoryOpen = gamePaused;
 
         if(gamePaused)
             playerController.ResetPlayer();
@@ -102,6 +112,15 @@ public class GameManager : MonoBehaviour
     void Start()
     {
 
+    }
+
+    public void QuitGame()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
     }
 
     // Update is called once per frame
@@ -121,10 +140,12 @@ public class GameManager : MonoBehaviour
             ResetGame();
         }
 
-        if (Input.GetButtonDown("Cancel") && !gameLost){ 
+        if (Input.GetButtonDown("Cancel") && !gameLost && !inventoryOpen){ 
             gamePaused = !gamePaused;
             GamePausedText.GetComponent<Text>().enabled = gamePaused;
-
+            QuitGameButton.GetComponent<Button>().enabled = gamePaused;
+            QuitGameButton.GetComponent<Image>().enabled = gamePaused;
+            QuitGameButton.transform.GetChild(0).GetComponent<Text>().enabled = gamePaused;
         }
     }
 }
